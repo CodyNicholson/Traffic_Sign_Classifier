@@ -1,55 +1,56 @@
-## Project: Build a Traffic Sign Recognition Program
-[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
+# Traffic Sign Classifier Project
 
-Overview
----
-In this project, you will use what you've learned about deep neural networks and convolutional neural networks to classify traffic signs. You will train and validate a model so it can classify traffic sign images using the [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset). After the model is trained, you will then try out your model on images of German traffic signs that you find on the web.
+In this project I used a deep convolutional neural network to classify images of German traffic signs. The model architecture is inspired by the LeNet architecture created by Yann LeCun.
 
-We have included an Ipython notebook that contains further instructions 
-and starter code. Be sure to download the [Ipython notebook](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb). 
+### 1. Preprocessing My Datasets
 
-We also want you to create a detailed writeup of the project. Check out the [writeup template](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/writeup_template.md) for this project and use it as a starting point for creating your own writeup. The writeup can be either a markdown file or a pdf document.
+To preprocess my datasets I created a pipeline that first grayscales the images, then applies min-max scaling for normalization, and then finally standardizes the data. I grayscaled the images to eliminate the noise that is color. I applied min-max scaling for normalization to make sure the data in my dataset is all on the same scale so that it is easy to compare each data point to each other data point. Lastly, I standardize my data by making the mean equal to zero because I find it easier to plot data that has been standardized.
 
-To meet specifications, the project will require submitting three files: 
-* the Ipython notebook with the code
-* the code exported as an html file
-* a writeup report either as a markdown or pdf file 
+### 2. Model Architecture
 
-Creating a Great Writeup
----
-A great writeup should include the [rubric points](https://review.udacity.com/#!/rubrics/481/view) as well as your description of how you addressed each point.  You should include a detailed description of the code used in each step (with line-number references and code snippets where necessary), and links to other supporting documents or external references.  You should include images in your writeup to demonstrate how your code works with examples.  
+Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
-All that said, please be concise!  We're not looking for you to write a book here, just a brief description of how you passed each rubric point, and references to the relevant code :). 
+My final model architecture, as seen below, is based off the LeNet architecture. I added dropout near the bottom of the architecture to help with the training of my model. Dropout will randomly select data from the training set to remove. This happens again and again in every epoch with different data points being removed. By training like this we can come closer to simulating how the model will interpret random new data, and better prepare our model for the real world.
 
-You're not required to use markdown for your writeup.  If you use another method please just submit a pdf of your writeup.
+| Layer              | Description        |
+|:------------------ |:------------------ |
+| Input              | 32x32x1 RGB Image  |
+| Convolution 5x5    | 28x28x6 Image      |
+| RELU               |                    |
+| Max Pooling        | 14x14x6 RGB Image  |
+| Convolution        | 10x10x16 Image     |
+| RELU               |                    |
+| Max Pooling        | 5x5x16 RGB Image   |
+| Flatten            | 5x5x16 (400)       |
+| Convolutional Full | 84                 |
+| RELU               |                    |
+| Convolutional Full | 10                 |
+| Dropout 1          |                    |
 
-The Project
----
-The goals / steps of this project are the following:
-* Load the data set
-* Explore, summarize and visualize the data set
-* Design, train and test a model architecture
-* Use the model to make predictions on new images
-* Analyze the softmax probabilities of the new images
-* Summarize the results with a written report
+### 3. How I Trained My Model
 
-### Dependencies
-This lab requires:
+I trained over 100 EPOCHs, but I avoid overfitting the data by using dropout, and by shuffling my data before every sess.run(). In shuffling and using dropout in my training I can simulate randomness to a significant degree. Over 100 EPOCHs I will always get above 93% accuracy, sometimes even 94%.
 
-* [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit)
+I kept the learning rate low at 0.001 so that my algorithm learns slowly but with high consistency. I used a BATCH_SIZE of 128, primarily because it worked well for other image classifiers like LeNet.
 
-The lab environment can be created with CarND Term1 Starter Kit. Click [here](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) for the details.
+### 4. My approach to finding the solution and getting the validation set accuracy to be at least 0.93
 
-### Dataset and Repository
+To find my solution I relied on a modified version of the LeNet architecture with the added ML technique dropout. As you can see in the results, it takes almost 20 EPOCHs to get into the 90% correct range. This is because I set my learning rate to the low value of 0.001, but as you can see after the first 20 EPOCHs there are almost no accuracy values lower then 90%. This consistency is good evidence that my model is working well. I think that the LeNet architecture was very suitable for this problem since this is also an image classifier.
 
-1. Download the data set. The classroom has a link to the data set in the "Project Instructions" content. This is a pickled dataset in which we've already resized the images to 32x32. It contains a training, validation and test set.
-2. Clone the project, which contains the Ipython notebook and the writeup template.
-```sh
-git clone https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project
-cd CarND-Traffic-Sign-Classifier-Project
-jupyter notebook Traffic_Sign_Classifier.ipynb
-```
+***
 
-### Requirements for Submission
-Follow the instructions in the `Traffic_Sign_Classifier.ipynb` notebook and write the project report using the writeup template as a guide, `writeup_template.md`. Submit the project code and writeup document.
-# Traffic_Sign_Classifier
+## Testing the model on new images
+
+### 1. The five images I chose for my model to classify
+
+If you look at the five images I chose you will see that they all have different lighting as a result of the time of day or season. I was also interested in finding out how the model would perform if there was something covering the sign, so my first image has snow covering the bottom of the sign.
+
+### 2. The model's predictions
+
+Of the five predictions, only four are correct. The one prediction it gets wrong is the sign that is partially covered with snow. I am interested to learn how to augment the image more so that this problem is resolved. Surprisingly, the correct answer for this prediction isn't even in the top five predictions as you can see in the softmax probabilities data visualization below. Other than the sign with the snow on it, the model performed very well on these new images.
+
+### 3. Model certainty
+
+The model seems very certain of its predictions, as seen in the data visualization. For four of the five graphs, there is only one visible bar for the five possible values on the x-axis. Since my model is so certain of itself, it makes me think that it might be a little overfit.
+
+The accuracy on the captured images is 80% while it averaged at about 93% on the testing set. However, the one captured image that gets labeled incorrectly is due to the snow on the sign in the picture. If the sign did not have snow on it, I am confident the model would label it correctly and have 100% accuracy. This leads me to believe that my model may be a bit overfit since it is so confident.
