@@ -2,6 +2,8 @@
 
 In this project I used a deep convolutional neural network to classify images of German traffic signs. The model architecture is inspired by the LeNet architecture created by Yann LeCun.
 
+You can view the project code at: https://codynicholson.github.io/Traffic_Sign_Classifier/
+
 ### 1. Preprocessing My Datasets
 
 To preprocess my datasets I created a pipeline that first grayscales the images, then applies min-max scaling for normalization, and then finally standardizes the data. I grayscaled the images to eliminate the noise that is color. I applied min-max scaling for normalization to make sure the data in my dataset is all on the same scale so that it is easy to compare each data point to each other data point. Lastly, I standardize my data by making the mean equal to zero because I find it easier to plot data that has been standardized.
