@@ -2,7 +2,7 @@
 
 In this project I used a deep convolutional neural network to classify images of German traffic signs. The model architecture is inspired by the LeNet architecture created by Yann LeCun.
 
-You can view the project code at: https://codynicholson.github.io/Traffic_Sign_Classifier/
+You can view the project code at: https://codynicholson.github.io/Traffic_Sign_Classifier_Project/
 
 ### 1. Preprocessing My Datasets
 
