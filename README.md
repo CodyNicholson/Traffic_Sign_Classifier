@@ -27,7 +27,7 @@ My final model architecture, as seen below, is based off the LeNet architecture.
 | Convolutional Full | 84                 |
 | RELU               |                    |
 | Convolutional Full | 10                 |
-| Dropout 0.2        |                    |
+| Dropout            | 0.2                |
 
 ### 3. How I Trained My Model
 
