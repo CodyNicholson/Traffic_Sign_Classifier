@@ -10,8 +10,6 @@ To preprocess my datasets I created a pipeline that first grayscales the images,
 
 ### 2. Model Architecture
 
-Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
-
 My final model architecture, as seen below, is based off the LeNet architecture. I added dropout near the bottom of the architecture to help with the training of my model. Dropout will randomly select data from the training set to remove. This happens again and again in every epoch with different data points being removed. By training like this we can come closer to simulating how the model will interpret random new data, and better prepare our model for the real world.
 
 | Layer              | Description        |
